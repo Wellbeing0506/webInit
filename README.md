@@ -7,25 +7,25 @@ website Project initial item
 3. express 4.13.4
 
 ### Proecss 
-  >>express --ejs webinit
+  >express --ejs webinit
   
-  >>cd webinit && npm install --save
+  >cd webinit && npm install --save
   
-  >>npm install https --save
+  >npm install https --save
   
-  >>vim bin/www
+  >vim bin/www
   
   		#####  SSL Certification
   		
-  		>>openssl genrsa -out webkey.pem 1024
+  		>openssl genrsa -out webkey.pem 1024
   		
-  		>>openssl req -new -key webkey.pem -out webinit.csr
+  		>openssl req -new -key webkey.pem -out webinit.csr
   		
-  		>>openssl x509 -req -in webinit.csr -signkey webkey.pem -out webcert.pem
+  		>openssl x509 -req -in webinit.csr -signkey webkey.pem -out webcert.pem
   		
-  		>>vim sslLicense.js
+  		>vim sslLicense.js
   		
-  		"
+"
   		var fs = require('fs');
   		var keyPath = 'webkey.pem';
   		var cerPath = 'webcert.pem';
@@ -38,20 +38,20 @@ website Project initial item
   		var ssl = {};
   		ssl.options=options;
   		module.exports = ssl;
-  		"
+"
   		
-  		>>vim bin/www
-  		"
+  		>vim bin/www
+"
   		var ssl = require('../ssl/sslLicense.js');
-		var httpsport = normalizePort(process.env.PORT || 8080);
-		app.set('httpsport',8080);
-		var httpsServer = https.createServer(ssl.options,app).listen(app.get('httpsport'));
-		httpsServer.listen(httpsport);
-		httpsServer.on('error', onError);
-		httpsServer.on('listening', onListening);
-  		"
+			var httpsport = normalizePort(process.env.PORT || 8080);
+			app.set('httpsport',8080);
+			var httpsServer = https.createServer(ssl.options,app).listen(app.get('httpsport'));
+			httpsServer.listen(httpsport);
+			httpsServer.on('error', onError);
+			httpsServer.on('listening', onListening);
+"
   	
-  	>>node bin/www
+  	>node bin/www
   	
   		
    
