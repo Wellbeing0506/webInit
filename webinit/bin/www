@@ -1,15 +1,8 @@
 #!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
 var app = require('../app');
 var debug = require('debug')('webinit:server');
 var https = require('https');
 var ssl = require('../ssl/sslLicense.js');
-
-
 var httpsport = normalizePort(process.env.PORT || 8080);
 app.set('httpsport',8080);
 var httpsServer = https.createServer(ssl.options,app).listen(app.get('httpsport'));
@@ -17,20 +10,16 @@ var httpsServer = https.createServer(ssl.options,app).listen(app.get('httpsport'
 httpsServer.listen(httpsport);
 httpsServer.on('error', onError);
 httpsServer.on('listening', onListening);
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
-
   if (isNaN(port)) {
     // named pipe
     return val;
   }
-
   if (port >= 0) {
     // port number
     return port;
   }
-
   return false;
 }
 
@@ -38,11 +27,9 @@ function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
