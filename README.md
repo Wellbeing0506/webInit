@@ -13,9 +13,15 @@ website Project initial item
 4. DB switch
   	
 ### Execute 
->$npm install --save
+>$cd webinit
 
->$npm start
+>$npm install 
+
+>$node bin/www or $npm start
+
+or
+
+>$pm2 start bin/www --name "website:Port"
   		
    
   
