@@ -5,8 +5,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var crypto = require('crypto');
+var sqlite3 = require('sqlite3');
+var db = new sqlite3.Database('./db/mydb.sqlite');
+var flash = require('connect-flash');
+
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+
 var routes = require('./routes/index');
-var users = require('./routes/users');
+//var users = require('./routes/users');
+var User = require('./models/user');
 
 var app = express();
 
@@ -22,8 +32,61 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({secret:'dave test'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+//passport.use(new LocalStrategy(
+//	function(username,password,done){
+//		User.find({where:{name:username}})
+//				.success(function(user){
+//					console.log(user);
+//					done(null,user);
+//				})
+//				.error(function(err){
+//					console.log(err);
+//					done(err);
+//				});
+//	}));
+
+passport.use('local-login',
+new LocalStrategy({
+	nameField : 'name',
+	passwordField : 'password',
+	passReqToCallback : true
+},
+function(req,username,password,done){
+	console.log(username,password);
+	User.findOne({where:{name:username}}).then(function(user) {
+		console.log(user);
+	});
+	//User.findOne({'name':username},function(err,user){
+	//		if(err) {
+	//			console.log("some",err)
+	//			return done(err);
+	//		} 
+	//		if(!user) {
+	//			console.log("no");
+	//			return done(null,false,req.flash('loginMessage', 'No user found.'));
+	//		}
+	//		cosnole.log(user);
+	//		return done(null,user);
+	//});
+}));
+passport.serializeUser(function(user,done){
+	return done(null,user.id);
+});
+passport.deserializeUser(function(id,done){
+	db.get('select id, name, password from Users where id ="',id, function(err,row){
+		return done(null,row);
+	});	
+});
+
+
+
 app.use('/', routes);
-app.use('/users', users);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

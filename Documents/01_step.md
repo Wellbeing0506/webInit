@@ -1,10 +1,5 @@
-# webInit
-website Project initial item
-
-# Environment
-1. NodeJS v4.2.0
-2. NPM 2.14.7
-3. express 4.13.4
+# HTTPS server and Initial
+Set up express website with https.
 
 ### Proecss 
   >express --ejs webinit
