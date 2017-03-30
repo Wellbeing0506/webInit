@@ -10,6 +10,7 @@ var httpsServer = https.createServer(ssl.options,app).listen(app.get('httpsport'
 httpsServer.listen(httpsport);
 httpsServer.on('error', onError);
 httpsServer.on('listening', onListening);
+
 function normalizePort(val) {
   var port = parseInt(val, 10);
   if (isNaN(port)) {

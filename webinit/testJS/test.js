@@ -38,16 +38,16 @@ var username = "Dave";
     //  return done(null,user);
   });
 
-module.exports = User;
+//module.exports = User;
 
-//function find(name) {
-//	User.findOne({
-//		where:{name:name}
-//	}).then(function(user){
-//		console.log(user.dataValues);
-//	});
-//}
-//find('Ben');
+function find(name) {
+	User.findOne({
+		where:{name:name}
+	}).then(function(user){
+		console.log(user.dataValues);
+	});
+}
+find('Ben');
 //
 //User.findOne().then(function(user){
 //	console.log(user.get('name'));
