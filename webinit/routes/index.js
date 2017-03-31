@@ -16,7 +16,7 @@ router.post('/',
 }));
 
 router.get('/',function(req,res,next) {
-  res.render('index.ejs', { message:req.flash('LoginMessage')});
+	res.render('index.ejs', { message:req.flash('LoginMessage')});
 });
 
 router.get('/signup', function(req, res,next) {  

@@ -13,6 +13,8 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var User = require('./models/user');
 
+
+
 var app = express();
 
 // view engine setup
@@ -24,14 +26,24 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('dave cookie'));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use(session({secret:'dave test'}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+app.use(function(req,res,next){
+	if(req.method=='POST' && req.url=='/') {
+		if(req.body.remember === "yes" ) {
+			req.session.cookie.maxAge = 10*1000;
+		} else {
+			req.session.cookie.expires = false;
+		}
+	}
+	next();
+});
 
 passport.serializeUser(function(user,done){
 	return done(null,user);
@@ -49,7 +61,6 @@ new LocalStrategy({
 	passReqToCallback : true
 },
 function(req,username,password,done){
-	console.log(username);
 	User.findOne(
 		{where:{name:username}}
 	).then(function(user){
@@ -88,8 +99,6 @@ function(req,username,password,done){
 		);
 	});	
 }));
-
-
 
 app.use('/', routes);
 //app.use('/users', users);
