@@ -6,16 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var crypto = require('crypto');
-var sqlite3 = require('sqlite3');
-var db = new sqlite3.Database('./db/mydb.sqlite');
 var flash = require('connect-flash');
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
-
 var routes = require('./routes/index');
-//var users = require('./routes/users');
 var User = require('./models/user');
 
 var app = express();
@@ -31,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(session({secret:'dave test'}));
 app.use(passport.initialize());
@@ -60,7 +56,8 @@ function(req,username,password,done){
 			return done(null,false,req.flash('LoginMessage','  No User'));
 		}
 		if(user) {
-			if(user.dataValues.password === password) {
+			var passwd = crypto.createHash('sha1').update(password).digest('hex');
+			if(user.dataValues.password === passwd) {
 				done(null,user);
 			} else {
 				return done(null,false,req.flash('LoginMessage',' Password Wrong'));
@@ -76,19 +73,19 @@ new LocalStrategy({
 	passReqToCallback : true
 },
 function(req,username,password,done){
-	//process.nextTick(function(){
+	process.nextTick(function(){
 		User.findOne({where:{name:username}}).then(
 			function(user) {
-				console.log(user.dataValues);
 				if(user) {
 					return done(null,false,req.flash('SignupMessage','username has existed'));
 				} else {
-					User.create({name:username,password:password,mysalt:"salt"});
+					var passwd = crypto.createHash('sha1').update(password).digest('hex');		
+					User.create({name:username,password:passwd,mysalt:"salt"});
 					return done(null,username);
 				}
 			}	
 		);
-	//});	
+	});	
 }));
 
 
