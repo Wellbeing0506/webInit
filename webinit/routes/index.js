@@ -16,7 +16,7 @@ router.post('/',
 }));
 
 router.get('/',function(req,res,next) {
-  res.render('login.ejs', { message:req.flash('LoginMessage')});
+  res.render('index.ejs', { message:req.flash('LoginMessage')});
 });
 
 router.get('/signup', function(req, res,next) {  
@@ -25,6 +25,9 @@ router.get('/signup', function(req, res,next) {
 
 router.get('/profile', isLoggedIn, function(req, res) {  
   res.render('profile.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
+});
+router.get('/sidemenu', isLoggedIn, function(req, res) {  
+  res.render('sidemenu.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
 });
 
 router.get('/logout', function(req, res) {  

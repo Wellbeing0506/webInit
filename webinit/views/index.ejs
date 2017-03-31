@@ -1,36 +1,33 @@
-<!-- views/index.ejs -->
+<!-- views/login.ejs -->
 <!doctype html>
 <html>
 	<head>
-	    <title>Node Authentication</title>
-			<link rel="stylesheet" href="/stylesheets/foundation.min.css">
-			<script src="/javascripts/jquery.js"></script>
-			<script src="/javascripts/what-input.js"></script>
-			<script src="/javascripts/foundation.min.js"></script>
-	    <style>
-	        body        { padding-top:80px; }
-	    </style>
+		<% include includes/head %>
+<style>
+    body        { padding-top:80px; word-wrap:break-word; }
+</style>
+
 	</head>
 	<body>
-		<div class="row" data-equalizer>
-		  <div class="medium-6 medium-centered large-4 large-centered columns">
-				<div class="column column-block">
-					<h4 class="text-center"> Home Page </h4>
-					<a href="/login" class="button center">Login</a>
-				</div>
-		  </div>
+		<div class="row">
+			<div class="medium-6 medium-centered large-4 large-centered columns">
+          <% if (message.length > 0) { %>
+              <div class="callout alert"><%= message %></div>
+          <% } %>
+				<h4 class="text-center">Log in with your account</h4>
+<hr>
+				<form action="/" method="POST">
+					<h4 class="text-center"></h4>
+					<label>Username
+						<input type="text" placeholder="Username" name="username">
+					</label>
+					<label>
+							Password<input type="password" placeholder="Password" name="password">
+					</label>
+					<button type="submit" class="button expanded">Login</button>
+				</form>
+<hr>
+			</div>
 		</div>
-
-
-		<!--div class="container">
-		    <div class="jumbotron text-center">
-		        <h1><span class="fa fa-lock"></span>Home Page</h1>
-		        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
-		    </div>
-		</div--!>
-
-		<script>
-			$(document).foundation()
-		</script>
 	</body>
 </html>

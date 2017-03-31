@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+	<% include includes/head %>
+<style>
+.sticky {
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+		<% include includes/top_bar %>
+<div class="off-canvas-wrapper">
+	<div class="off-canvas position-bottom" id="offCanvas" data-off-canvas>
+    <!-- Close button -->
+    <button class="close-button" aria-label="Close menu" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <!-- Menu -->
+    <ul class="vertical menu">
+      <li><a href="#">Members</a></li>
+      <li><a href="#">Report</a></li>
+      <li><a href="#">中文</a></li>
+      <li><a href="#">Others</a></li>
+    </ul>
+
+  </div>
+
+	  <div class="off-canvas-content" data-off-canvas-content>
+    <!-- Your page content lives here -->
+
+		</div>
+</div>
+
+<% include includes/foundation_init %>
+
+
+</body>
+</html>
+
