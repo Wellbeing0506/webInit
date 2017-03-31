@@ -3,25 +3,34 @@
 <html>
 	<head>
 	    <title>Node Authentication</title>
-			<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-			<link rel="stylesheet" href="/stylesheets/font-awesome.min.css">
+			<link rel="stylesheet" href="/stylesheets/foundation.min.css">
+			<script src="/javascripts/jquery.js"></script>
+			<script src="/javascripts/what-input.js"></script>
+			<script src="/javascripts/foundation.min.js"></script>
 	    <style>
 	        body        { padding-top:80px; }
 	    </style>
 	</head>
 	<body>
-		<div class="container">
+		<div class="row" data-equalizer>
+		  <div class="medium-6 medium-centered large-4 large-centered columns">
+				<div class="column column-block">
+					<h4 class="text-center"> Home Page </h4>
+					<a href="/login" class="button center">Login</a>
+				</div>
+		  </div>
+		</div>
+
+
+		<!--div class="container">
 		    <div class="jumbotron text-center">
 		        <h1><span class="fa fa-lock"></span>Home Page</h1>
-<!--
-		        <p>Login</p>
---!>
 		        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
-<!--
-		        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
---!>
 		    </div>
-		
-		</div>
+		</div--!>
+
+		<script>
+			$(document).foundation()
+		</script>
 	</body>
 </html>

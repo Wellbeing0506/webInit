@@ -4,18 +4,18 @@ var passport = require('passport');
 
 
 /* GET home page. */
-//router.get('/', function(req, res, next) {
-//  res.render('index.ejs', { title: 'Express' });
-//});
+router.get('/', function(req, res, next) {
+  res.render('index.ejs', { title: 'Express' });
+});
 
-router.post('/',
+router.post('/login',
 	passport.authenticate('local-login',{
 		successRedirect : '/profile',
-		failureRedirect : '/',
+		failureRedirect : '/login',
 		failureFlash: true,
 }));
 
-router.get('/',function(req,res,next) {
+router.get('/login',function(req,res,next) {
   res.render('login.ejs', { message:req.flash('LoginMessage')});
 });
 

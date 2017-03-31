@@ -49,6 +49,7 @@ new LocalStrategy({
 	passReqToCallback : true
 },
 function(req,username,password,done){
+	console.log(username);
 	User.findOne(
 		{where:{name:username}}
 	).then(function(user){

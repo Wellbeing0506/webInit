@@ -3,34 +3,33 @@
 <html>
 	<head>
 	    <title>Home</title>
-	    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-	    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"> 
+      <link rel="stylesheet" href="/stylesheets/foundation.min.css">
+      <script src="/javascripts/jquery.js"></script>
+      <script src="/javascripts/foundation.min.js"></script>
+      <script src="/javascripts/what-input.js"></script>
 	    <style>
 	        body        { padding-top:80px; }
 	    </style>
 	</head>
 	<body>
-		<div class="container">
-			<div class="col-sm-6 col-sm-offset-3">
-			    <h1><span class="fa fa-sign-in"></span> Login</h1>
-					<p><%= message %></p>
-			    <% if (message.length > 0) { %>
-			        <div class="alert alert-danger"><%= message %></div>
-			    <% } %>
-			    <form action="/login" method="post">
-			        <div class="form-group">
-			            <label>Username</label>
-			            <input type="text" class="form-control" name="username">
-			        </div>
-			        <div class="form-group">
-			            <label>Password</label>
-			            <input type="password" class="form-control" name="password">
-			        </div>
-			        <button type="submit" class="btn btn-warning btn-lg">Login</button>
-			    </form>
-			    <hr>
-			    <p>Need an account? <a href="/signup">Signup</a></p>
-			    <p>Or go <a href="/">home</a>.</p>
+		<div class="row">
+			<div class="medium-6 medium-centered large-4 large-centered columns">
+          <% if (message.length > 0) { %>
+              <div class="callout alert"><%= message %></div>
+          <% } %>
+<hr>
+				<form action="/" method="POST">
+					<h4 class="text-center">Log in with your account</h4>
+					<label>Username
+						<input type="text" placeholder="Username" name="username">
+					</label>
+					<label>
+							Password<input type="password" name="password">
+					</label>
+					<button type="submit" class="button expanded">Login</button>
+				</form>
+<hr>
+
 			</div>
 		</div>
 	</body>
