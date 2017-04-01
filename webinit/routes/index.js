@@ -29,6 +29,9 @@ router.get('/profile', isLoggedIn, function(req, res) {
 router.get('/sidemenu', isLoggedIn, function(req, res) {  
   res.render('sidemenu.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
 });
+router.get('/myTemp', isLoggedIn, function(req, res) {  
+  res.render('myTemp.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
+});
 
 router.get('/logout', function(req, res) {  
   req.logout();
