@@ -37,7 +37,7 @@ app.use(flash());
 app.use(function(req,res,next){
 	if(req.method=='POST' && req.url=='/') {
 		if(req.body.remember === "yes" ) {
-			req.session.cookie.maxAge = 10*1000;
+			req.session.cookie.maxAge = 60*1000;
 		} else {
 			req.session.cookie.expires = false;
 		}

@@ -2,21 +2,21 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-
-/* GET home page. */
-//router.get('/', function(req, res, next) {
-//  res.render('index.ejs', { title: 'Express' });
-//});
-
 router.post('/',
-	passport.authenticate('local-login',{
+	passport
+	.authenticate('local-login',{
 		successRedirect : '/profile',
 		failureRedirect : '/',
 		failureFlash: true,
-}));
+	})
+);
 
 router.get('/',function(req,res,next) {
-	res.render('index.ejs', { message:req.flash('LoginMessage')});
+	if(req.session.cookie._expires) {
+  	res.render('profile.ejs', { message: req.user.name });
+	} else {
+		res.render('index.ejs', { message:req.flash('LoginMessage')});
+	}
 });
 
 router.get('/signup', function(req, res,next) {  
@@ -24,7 +24,7 @@ router.get('/signup', function(req, res,next) {
 });
 
 router.get('/profile', isLoggedIn, function(req, res) {  
-  res.render('profile.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
+  res.render('profile.ejs', { username: "ok" ,password:"ppp",message: req.user.dataValues.name });
 });
 router.get('/sidemenu', isLoggedIn, function(req, res) {  
   res.render('sidemenu.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
