@@ -26,9 +26,11 @@ router.get('/signup', function(req, res,next) {
 router.get('/profile', isLoggedIn, function(req, res) {  
   res.render('profile.ejs', { username: "ok" ,password:"ppp",message: req.user.dataValues.name });
 });
+
 router.get('/sidemenu', isLoggedIn, function(req, res) {  
   res.render('sidemenu.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
 });
+
 router.get('/myTemp', isLoggedIn, function(req, res) {  
   res.render('myTemp.ejs', { username: "ok" ,password:"ppp",message: req.user.name });
 });

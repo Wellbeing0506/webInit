@@ -12,6 +12,5 @@ var User = sequelize.define('User',{
   updatedAt : Sequelize.DATE
 });
 
-
 module.exports = User;
 

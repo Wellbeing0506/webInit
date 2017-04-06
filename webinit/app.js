@@ -13,10 +13,7 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var User = require('./models/user');
 
-
-
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -37,7 +34,7 @@ app.use(flash());
 app.use(function(req,res,next){
 	if(req.method=='POST' && req.url=='/') {
 		if(req.body.remember === "yes" ) {
-			req.session.cookie.maxAge = 60*1000;
+			req.session.cookie.maxAge = 600*1000;
 		} else {
 			req.session.cookie.expires = false;
 		}
@@ -55,50 +52,52 @@ passport.deserializeUser(function(id,done){
 });
 
 passport.use('local-login',
-new LocalStrategy({
-	nameField : 'name',
-	passwordField : 'password',
-	passReqToCallback : true
-},
-function(req,username,password,done){
-	User.findOne(
-		{where:{name:username}}
-	).then(function(user){
-		if(!user) {
-			return done(null,false,req.flash('LoginMessage','  No User'));
-		}
-		if(user) {
-			var passwd = crypto.createHash('sha1').update(password).digest('hex');
-			if(user.dataValues.password === passwd) {
-				done(null,user);
-			} else {
-				return done(null,false,req.flash('LoginMessage',' Password Wrong'));
+	new LocalStrategy({
+		nameField : 'name',
+		passwordField : 'password',
+		passReqToCallback : true
+	},
+	function(req,username,password,done){
+		User.findOne(
+			{where:{name:username}}
+		).then(function(user){
+			if(!user) {
+				return done(null,false,req.flash('LoginMessage','  No User'));
 			}
-		}
-	});
-}));
+			if(user) {
+				var passwd = crypto.createHash('sha1').update(password).digest('hex');
+				if(user.dataValues.password === passwd) {
+					done(null,user);
+				} else {
+					return done(null,false,req.flash('LoginMessage',' Password Wrong'));
+				}
+			}
+		});
+	})
+);
 
 passport.use('local-signup',
-new LocalStrategy({
-	nameField : 'name',
-	passwordField : 'password',
-	passReqToCallback : true
-},
-function(req,username,password,done){
-	process.nextTick(function(){
-		User.findOne({where:{name:username}}).then(
-			function(user) {
-				if(user) {
-					return done(null,false,req.flash('SignupMessage','username has existed'));
-				} else {
-					var passwd = crypto.createHash('sha1').update(password).digest('hex');		
-					User.create({name:username,password:passwd,mysalt:"salt"});
-					return done(null,username);
-				}
-			}	
-		);
-	});	
-}));
+	new LocalStrategy({
+		nameField : 'name',
+		passwordField : 'password',
+		passReqToCallback : true
+	},
+	function(req,username,password,done){
+		process.nextTick(function(){
+			User.findOne({where:{name:username}}).then(
+				function(user) {
+					if(user) {
+						return done(null,false,req.flash('SignupMessage','username has existed'));
+					} else {
+						var passwd = crypto.createHash('sha1').update(password).digest('hex');		
+						User.create({name:username,password:passwd,mysalt:"salt"});
+						return done(null,username);
+					}
+				}	
+			);
+		});	
+	})
+);
 
 app.use('/', routes);
 //app.use('/users', users);
