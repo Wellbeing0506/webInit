@@ -4,17 +4,6 @@ var sequelize = new Sequelize('database',null,null,{
 	storage:'../db/mydb.sqlite'
 });
 
-//sequelize
-//.authenticate()
-//.then(function(err){
-//	console.log("connecting",err);
-//})
-//.catch(function(err){
-//	console.log("Unable to connect",err);
-//});;
-
-
-
 var User = sequelize.define('User',{
 	name : Sequelize.STRING,
 	password : Sequelize.STRING,

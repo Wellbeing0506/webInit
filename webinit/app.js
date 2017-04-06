@@ -10,8 +10,16 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
-var routes = require('./routes/index');
-var User = require('./models/user');
+
+//csrf prodetection 
+//var csrf = require('csurf');
+//var csrfProtection = csrf({cookie: true});
+//app.use(csrf());
+//app.use(function(req,res,next){
+//	res.cookie('XSRF-TOKEN', req.csrfToken());
+//	res.locals.csrftoken = req.csrfToken();
+//	next();
+//});
 
 var app = express();
 // view engine setup
@@ -25,8 +33,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('dave cookie'));
 app.use(express.static(path.join(__dirname, 'public')));
+var routes = require('./routes/index');
+var User = require('./models/user');
 
-app.use(session({secret:'dave test'}));
+var expiryDate = new Date(Date.now() + 60*60*1000);
+app.use(session({
+	secret:'dave test',
+	name:'sessionId',
+	httpOnly:true,
+	expires:expiryDate
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -34,7 +50,7 @@ app.use(flash());
 app.use(function(req,res,next){
 	if(req.method=='POST' && req.url=='/') {
 		if(req.body.remember === "yes" ) {
-			req.session.cookie.maxAge = 600*1000;
+			req.session.cookie.maxAge = 30*24*60*60*1000;
 		} else {
 			req.session.cookie.expires = false;
 		}
