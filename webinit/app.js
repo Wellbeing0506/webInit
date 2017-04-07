@@ -86,6 +86,7 @@ passport.use('local-login',
 			if(user) {
 				var passwd = crypto.createHash('sha1').update(password).digest('hex');
 				if(user.dataValues.password === passwd) {
+					req.session.cookie.originalMaxAge = expiryDate;
 					done(null,user);
 				} else {
 					return done(null,false,req.flash('LoginMessage',' Password Wrong'));

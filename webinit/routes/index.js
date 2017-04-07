@@ -18,8 +18,13 @@ router.post('/',
 );
 
 router.get('/',function(req,res,next) {
-	if(req.session.cookie._expires) {
-  	res.render('myTemp.ejs', { message: req.user.name,table:results });
+	console.log(req.session.cookie);
+	if(req.session.cookie._expires || req.session.cookie.originalMaxAge) {
+  //	res.render('myTemp.ejs', { message: req.user.name, table:results });
+	sequelize.query("select * from t1;").spread(function(results,meta){
+		console.log(results,meta);
+  	res.render('myTemp.ejs', { message: req.user.name, table:results});
+	});
 	} else {
 		res.render('index.ejs', { message:req.flash('LoginMessage')});
 	}
@@ -49,6 +54,7 @@ router.get('/myTemp', isLoggedIn, function(req, res) {
 });
 
 router.get('/logout', function(req, res) {  
+	req.session.cookie.maxAge = null;
   req.logout();
   res.redirect('/');
 });
