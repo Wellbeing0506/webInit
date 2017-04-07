@@ -10,6 +10,7 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
+var helmet = require('helmet');
 
 //csrf prodetection 
 //var csrf = require('csurf');
@@ -26,6 +27,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(helmet());
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -34,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('dave cookie'));
 app.use(express.static(path.join(__dirname, 'public')));
 var routes = require('./routes/index');
+var points = require('./routes/points');
 var User = require('./models/user');
 
 var expiryDate = new Date(Date.now() + 60*60*1000);
@@ -116,6 +119,7 @@ passport.use('local-signup',
 );
 
 app.use('/', routes);
+app.use('/points', points);
 //app.use('/users', users);
 
 // catch 404 and forward to error handler
