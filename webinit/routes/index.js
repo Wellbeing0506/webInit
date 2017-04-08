@@ -37,6 +37,9 @@ router.get('/signup', function(req, res,next) {
 router.get('/profile', isLoggedIn, function(req, res) {  
   res.render('profile.ejs', {message: req.user.name });
 });
+router.get('/dataTable', isLoggedIn, function(req, res) {  
+  res.render('dataTable.ejs', {message: req.user.name });
+});
 
 router.get('/sidemenu', isLoggedIn, function(req, res) {  
 	var output = {};
