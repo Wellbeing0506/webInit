@@ -2,6 +2,7 @@
 <html>
 <head>
 	<% include includes/head %>
+<script src="/javascripts/excel.js"></script>
 <style>
 .sticky 		{width: 100%;}
 </style>
@@ -11,37 +12,72 @@
 	<% include includes/top_bar %>
 
 		<div class="medium-8 large-10 medium-push-3 large-push-2 columns">
-			<h3> OK </h3>
+			<h3> Pagination </h3>
 			<hr>
 			<div class="callout secondary">
-				<table class="hover">
-				  <thead>
-				    <tr>
-				      <th width="50">Table Header</th>
-				      <th>Table Header</th>
-				      <th width="150">Table Header</th>
-				      <th width="150">Table Header</th>
-				      <th width="150">Table Header</th>
-				      <th width="150">Table Header</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				<% for(var i=0;i<table.length;i++) {%>
-					<tr>
-					<% for (var j in table[i]) { %> 
-						<td><%= table[i][j] %></td>
+<div>
+		<a class="button" id="ServerFile" href="/xlsx">XSLX from Server Side</button></a>
+</div>
+				<div class="tabs-content" data-tabs-content="example-tabs">
+					<% for(var i in pages) { %>
+						<% if(i === "0" ) { %> 
+				  	<div class="tabs-panel is-active" id="page<%= i %>">
+						<% } else { %>
+				  	<div class="tabs-panel" id="page<%= i %>">
+						<% } %>
+							<table class="hover" id="myTable">
+								  <thead>
+								    <tr>
+								      <th>Item</th>
+								      <th>Seq</th>
+								      <th>Table Header</th>
+								      <th>Table Header</th>
+								      <th>Table Header</th>
+								      <th>Table Header</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+										<% for(var j=0;j<pages[i].length;j++) {%>
+											<tr>
+												<% for(var k in pages[i][j]) { %>
+													<td><%= pages[i][j][k] %></td>
+												<% } %>
+											</tr>	
+										<% } %>
+								
+									</tbody>
+							</table>
+				  	</div>
 					<% } %>
-					</tr>
-				<% } %>
-				  </tbody>
-				</table>
+				</div>
+
+				<ul class="pagination text-center" data-tabs id="example-tabs" role="navigation" aria-label="Pagination">
+					<% for ( var i in pages) { %>
+						<% if( i === "0" ) { %>
+						<li class="tabs-title is-active"><a href="#page<%= i %>"> <%= i %></a></p>
+						<% } else { %> 	
+							<li class="tabs-title"><a href="#page<%= i %>"> <%= i %></a></p>
+						<% } %>
+					<% } %>
+				</ul>
+
 			</div>
+
+			<hr>
 		</div>
-	<% include includes/sidemenu %>
+		<% include includes/sidemenu %>
 
 	</div>
 	<% include includes/foundation_init %>
 
+	<script type="text/javascript">
+		var output = <%- JSON.stringify(table) %>
+		$(document).ready(function() {
+			$("#ClientFile").click(function(){
+				console.log("click");
+			});
+		});
+	</script>
 
 </body>
 </html>

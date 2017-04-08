@@ -12,15 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var helmet = require('helmet');
 
-//csrf prodetection 
-//var csrf = require('csurf');
-//var csrfProtection = csrf({cookie: true});
-//app.use(csrf());
-//app.use(function(req,res,next){
-//	res.cookie('XSRF-TOKEN', req.csrfToken());
-//	res.locals.csrftoken = req.csrfToken();
-//	next();
-//});
+var json2xls = require('json2xls');
 
 var app = express();
 // view engine setup
@@ -28,6 +20,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(helmet());
+
+app.use(json2xls.middleware);
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
