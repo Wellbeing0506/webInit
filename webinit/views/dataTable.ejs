@@ -3,6 +3,7 @@
 <head>
 	<% include includes/head %>
 <link rel="stylesheet" href="/stylesheets/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/stylesheets/buttons.dataTables.min.css">
 <script src="/javascripts/jquery.dataTables.min.js"></script>
 <style>
 .sticky 		{width: 100%;}
@@ -16,7 +17,8 @@
 			<h3> AJAX </h3>
 			<hr>
 			<div class="callout secondary" id="create">
-<table id="example" class="display" width="100%"></table>
+<a href="./exportButtons.html">Export buttons</a>
+<table id="example" class="display nowrap" width="100%"></table>
 			</div>
 			
 		</div>
@@ -52,7 +54,11 @@ $.ajax({
 $(document).ready(function() {
     $('#example').DataTable( {
         data: dataSet,
-        columns: columns
+        columns: columns,
+				text:'Export',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     } );
 });
 		
