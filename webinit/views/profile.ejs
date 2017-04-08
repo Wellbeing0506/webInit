@@ -2,50 +2,131 @@
 <html>
 <head>
 	<% include includes/head %>
+<link rel="stylesheet" href="/stylesheets/foundation-datepicker.min.css">
+<script src="/javascripts/foundation-datepicker.js"></script>
+<script src="/javascripts/foundation-datepicker.vi.js"></script>
 <style>
 .sticky 		{width: 100%;}
-.myContain  { top:25%; height:300px; width:150px}
 </style>
 </head>
 <body>
+	<div class="expanded row">
 	<% include includes/top_bar %>
-	<div class="myContain">
-		<div class="row">
-		<div class="column large-1">
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
-		<button class="hollow button secondary tiny" type="button" data-open="offCanvas">SideMenu</button>
+
+		<div class="medium-8 large-10 medium-push-3 large-push-2 columns">
+			<h3> AJAX </h3>
+			<hr>
+			<div class="callout secondary" id="create">
+					<h4 data-magellan-destination="no-inputs-example">Search Your Date</h4>
+					<a name="no-inputs-example"></a>
+					<p>Select Start Date and End Date For your query.</p>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Start date&nbsp;
+									<a href="#" class="button tiny" id="dp4" data-date-format="yyyy-mm-dd" data-date="2017-04-01">Change</a>
+								</th>
+								<th>End date&nbsp;
+									<a href="#" class="button tiny" id="dp5" data-date-format="yyyy-mm-dd" data-date="2017-04-01">Change</a>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="startDate"></td>
+								<td id="endDate"></td>
+							</tr>
+						</tbody>
+					</table>
+					<a class="button" id="select">Select</button></a>
+					<div class="alert alert-box"  style="display:none;" id="alert">	<strong>Oh snap!</strong>
+					</div>
+					<hr>
+
+			</div>
+			<div class="callout secondary" id="generate">
+			</div>
+			
 		</div>
-		</div>
-		<div class="off-canvas-wrapper">
-		  <div class="off-canvas position-left myContain" id="offCanvas" data-off-canvas>
-		    <!-- Close button -->
-		    <button class="close-button" aria-label="Close menu" type="button" data-close>
-		      <span aria-hidden="true">&times;</span>
-		    </button>
-		    <!-- Menu -->
-		    <ul class="vertical menu">
-		      <li><a href="#">Members</a></li>
-		      <li><a href="#">Report</a></li>
-		      <li><a href="#">中文</a></li>
-		      <li><a href="#">Others</a></li>
-		    </ul>
-		  </div>
-		  <div class="off-canvas-content" data-off-canvas-content>
-		    <!-- Your page content lives here -->
-		
-		  </div>
-		</div>
+		<% include includes/sidemenu %>
+		<hr>
 	</div>
-
-
 	<% include includes/foundation_init %>
 
+	<script type="text/javascript">
+function getFormattedDate(date) {
+  var year = date.getFullYear();
+  var month = (1 + date.getMonth()).toString();
+  month = month.length > 1 ? month : '0' + month;
+  var day = date.getDate().toString();
+  day = day.length > 1 ? day : '0' + day;
+  return year + '-' + month + '-' + day;
+}
+window.prettyPrint && prettyPrint();
+var startDate = new Date('2017-04-01');
+var endDate = new Date();
+$('#dp4').fdatepicker()
+  .on('changeDate', function (ev) {
+  if (ev.date.valueOf() > endDate.valueOf()) {
+    $('#alert').show().find('strong').text('The start date can not be greater then the end date');
+  } else {
+    $('#alert').hide();
+    startDate = new Date(ev.date);
+    $('#startDate').text($('#dp4').data('date'));
+  }
+  $('#dp4').fdatepicker('hide');
+});
+$('#dp5').fdatepicker()
+  .on('changeDate', function (ev) {
+  if (ev.date.valueOf() < startDate.valueOf()) {
+    $('#alert').show().find('strong').text('The end date can not be less then the start date');
+  } else {
+    $('#alert').hide();
+    endDate = new Date(ev.date);
+    $('#endDate').text($('#dp5').data('date'));
+  }
+  $('#dp5').fdatepicker('hide');
+});
+</script>
+
+<script>
+
+
+$(document).ready(function() {
+	$("#select").click(function(){
+		$("#startDate").text(getFormattedDate(startDate));
+		$("#endDate").text(getFormattedDate(endDate));
+			var start = getFormattedDate(startDate)+" 00:00:00.000";
+			var end = getFormattedDate(endDate)+" 23:59:59.999";
+			$.ajax({
+				url : "/points/"+start+"/"+end,
+				type : "GET",
+				success:function(html) {
+					$("#myGenerate").remove();	
+					$("#ServerFile").remove();	
+					console.log("get",html);
+					var downloadButton = '<a class="button" id="ServerFile" href="/xlsx">XSLX from Server Side</button></a>';
+					var tableString = '<table class="hover" id="myGenerate"><thead><tr><th>Item</th><th>Seq</th><th>Ename</th><th>Cname</th><th>CreatedTime</th><th>ModifiedTime</th></tr></thead><tobdy>';
+					for(var i in html) {
+						tableString += '<tr>';
+						for(var j in html[i]) {
+							tableString += '<td>'+html[i][j]+'</td>';
+						}
+						tableString += '</tr>';
+					}
+					tableString += "</tbody></table>";	
+					
+					var button = $("#generate").append(downloadButton);
+					var table = $("#generate").append(tableString);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+				}       
+			});
+	});
+});
+
+</script>
 
 </body>
 </html>

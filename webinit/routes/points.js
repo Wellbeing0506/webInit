@@ -17,6 +17,16 @@ router.get('/:id',function(req,res){
 		res.json({message:"okok"+result[0].uid+" "+JSON.stringify(result[0])});
 	});
 });
+
+router.get('/:start/:end',function(req,res){
+	console.log(req.params.start, req.params.end);
+	sequelize.query("select * from t1 where createdTime between \""+req.params.start+"\" and \""+req.params.end+"\";").spread(function(results,meta){	
+		console.log(meta);
+//		res.json({message:JSON.stringify(results)});
+		res.json(results);
+	});
+});
+
 router.post('/post',function(req,res){
 	res.setHeader('Access-Control-Allow-Origin','*');
 	sequelize.query("insert into t1 (ename, name) values(\'"+req.body.ename+"\',\'"+req.body.name+"\');")

@@ -35,7 +35,7 @@ router.get('/signup', function(req, res,next) {
 });
 
 router.get('/profile', isLoggedIn, function(req, res) {  
-  res.render('profile.ejs', { username: "ok" ,password:"ppp",message: req.user.dataValues.name });
+  res.render('profile.ejs', {message: req.user.name });
 });
 
 router.get('/sidemenu', isLoggedIn, function(req, res) {  
@@ -50,7 +50,7 @@ router.get('/sidemenu', isLoggedIn, function(req, res) {
 			output[page] = (output.hasOwnProperty(page)) ? output[page]: [];
 			output[page].push(results[i]);
 		}	
-  	res.render('sidemenu.ejs', { username: "ok" ,password:"ppp",message: req.user.name, table:results,pages:output});
+  	res.render('sidemenu.ejs', { message: req.user.name, table:results,pages:output});
 	});
 });
 router.get('/xlsx',function(req,res) {
