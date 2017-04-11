@@ -45,6 +45,11 @@ app.use(passport.session());
 app.use(flash());
 
 app.use(function(req,res,next){
+var ip = req.headers['x-forwarded-for'] ||
+req.connection.remoteAddress || 
+req.socket.remoteAddress ||
+req.connection.socket.remoteAddress;
+console.log("IP:",ip);
 	if(req.method=='POST' && req.url=='/') {
 		if(req.body.remember === "yes" ) {
 			req.session.cookie.maxAge = 30*24*60*60*1000;
