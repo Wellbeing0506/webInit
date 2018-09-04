@@ -8,17 +8,15 @@ Set up express website with https.
   
   >npm install https --save
   
-  >vim bin/www
-  
-  		#####  SSL Certification
+  #####  SSL Certification
+ 		
+ 		>openssl genrsa -out webkey.pem 1024
+ 		
+ 		>openssl req -new -key webkey.pem -out webinit.csr
   		
-  		>openssl genrsa -out webkey.pem 1024
-  		
-  		>openssl req -new -key webkey.pem -out webinit.csr
-  		
-  		>openssl x509 -req -in webinit.csr -signkey webkey.pem -out webcert.pem
-  		
-  		>vim sslLicense.js
+ 		>openssl x509 -req -in webinit.csr -signkey webkey.pem -out webcert.pem
+
+  	>vim sslLicense.js
   		
 ```
   		var fs = require('fs');
@@ -46,7 +44,6 @@ Set up express website with https.
 			httpsServer.on('listening', onListening);
 ```
   	
-  	>node bin/www
   	
   		
    
