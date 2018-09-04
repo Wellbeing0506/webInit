@@ -20,7 +20,7 @@ Set up express website with https.
   		
   		>vim sslLicense.js
   		
-"
+```
   		var fs = require('fs');
   		var keyPath = 'webkey.pem';
   		var cerPath = 'webcert.pem';
@@ -33,10 +33,10 @@ Set up express website with https.
   		var ssl = {};
   		ssl.options=options;
   		module.exports = ssl;
-"
+```
   		
   		>vim bin/www
-"
+```
   		var ssl = require('../ssl/sslLicense.js');
 			var httpsport = normalizePort(process.env.PORT || 8080);
 			app.set('httpsport',8080);
@@ -44,7 +44,7 @@ Set up express website with https.
 			httpsServer.listen(httpsport);
 			httpsServer.on('error', onError);
 			httpsServer.on('listening', onListening);
-"
+```
   	
   	>node bin/www
   	
